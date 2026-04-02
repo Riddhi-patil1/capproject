@@ -38,7 +38,8 @@ const AddCase = () => {
                 hearings_done: 0
             });
         } catch (err) {
-            setMessage('Error adding case. Double check unique Case ID.');
+            const errorMsg = err.response?.data?.error || 'Double check unique Case ID or Server connection.';
+            setMessage('Error: ' + errorMsg);
         }
     };
 

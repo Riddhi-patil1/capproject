@@ -8,6 +8,8 @@ const Schedule = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [algoStats, setAlgoStats] = useState(null);
+
     const generateSchedule = () => {
         setLoading(true);
         setMessage('Executing Schedule OS Balancer...');
@@ -15,6 +17,7 @@ const Schedule = () => {
             .then(res => {
                 setSchedule(res.data.schedule);
                 setJudges(res.data.judges);
+                setAlgoStats(res.data.algoStats);
                 setMessage('Load Balanced Schedule Successfully Generated');
             })
             .catch(err => {
@@ -58,6 +61,35 @@ const Schedule = () => {
                     <button onClick={() => window.print()} className="btn"><Maximize size={16} /> Export PDF</button>
                 </div>
             </div>
+
+            {algoStats && (
+                <div className="card" style={{ background: 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)', color: '#fff', border: '1px solid var(--color-gold)' }}>
+                    <h3 className="card-title" style={{ color: 'var(--color-gold)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Maximize size={20} /> Analysis of Algorithm (AoA) Report
+                    </h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginTop: '1rem' }}>
+                        <div>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#a0aec0' }}>Algorithm Strategy</p>
+                            <p style={{ margin: '5px 0 0 0', fontWeight: 'bold' }}>{algoStats.type || "Greedy Strategy"}</p>
+                        </div>
+                        <div>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#a0aec0' }}>Time Complexity</p>
+                            <p style={{ margin: '5px 0 0 0', fontWeight: 'bold', color: '#4fd1c5' }}>{algoStats.complexity}</p>
+                        </div>
+                        <div>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#a0aec0' }}>Execution Time</p>
+                            <p style={{ margin: '5px 0 0 0', fontWeight: 'bold' }}>{algoStats.time} ms</p>
+                        </div>
+                        <div>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#a0aec0' }}>Total Operations</p>
+                            <p style={{ margin: '5px 0 0 0', fontWeight: 'bold' }}>{algoStats.totalOps} Ops</p>
+                        </div>
+                    </div>
+                    <div style={{ marginTop: '15px', padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', fontSize: '0.85rem', color: '#cbd5e0' }}>
+                        <strong>Explanation:</strong> This algorithm uses a <strong>Greedy Choice</strong> by assigning each case to the judge with the current minimum workload. The total complexity is <strong>O(N log N)</strong> due to the sorting of cases by priority, which ensures the most critical cases are processed first.
+                    </div>
+                </div>
+            )}
 
             {message && (
                 <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#e2e8f0', color: '#2d3748', borderRadius: '4px', fontWeight: 'bold' }}>

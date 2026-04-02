@@ -8,8 +8,7 @@ const Dashboard = () => {
         total_cases: 0,
         avg_priority: 0,
         total_judges: 0,
-        workloads: [],
-        criticalPathDuration: 40
+        workloads: []
     });
 
     useEffect(() => {
@@ -36,8 +35,8 @@ const Dashboard = () => {
                     <div className="stat-value">{stats.avg_priority}</div>
                 </div>
                 <div className="stat-card success">
-                    <div className="stat-title"><Clock size={16} /> Critical Path Days</div>
-                    <div className="stat-value">{stats.criticalPathDuration}</div>
+                    <div className="stat-title"><Clock size={16} /> Algorithmic Complexity</div>
+                    <div className="stat-value">O(N log N)</div>
                 </div>
             </div>
 
@@ -57,18 +56,17 @@ const Dashboard = () => {
             </div>
 
             <div className="card">
-                <h3 className="card-title">Activity on Arrow (AOA) Model</h3>
-                <p>The system calculates Critical Path duration using established phase estimates:</p>
-                <div style={{ display: 'flex', gap: '15px', marginTop: '1rem', flexWrap: 'wrap' }}>
-                    <span className="badge badge-civil">Filing (2d)</span> →
-                    <span className="badge badge-civil">Notice (5d)</span> →
-                    <span className="badge badge-civil">Evidence (10d)</span> →
-                    <span className="badge badge-danger">Hearing (15d)</span> →
-                    <span className="badge badge-civil">Argument (5d)</span> →
-                    <span className="badge badge-success">Judgment (3d)</span>
-                </div>
-                <div style={{ marginTop: '1rem', fontWeight: 'bold' }}>
-                    Total Critical Path Duration: 40 Days
+                <h3 className="card-title">Analysis of Algorithms (AoA) Overview</h3>
+                <p>The JusticeOS Scheduling Engine is built on established algorithmic principles to ensure maximum throughput and fair distribution of legal cases.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '1rem' }}>
+                    <div style={{ padding: '1rem', background: '#f8fafc', borderRadius: '8px', borderLeft: '4px solid #6366f1' }}>
+                        <h4 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Greedy Strategy</h4>
+                        <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>Every case is assigned to the judge with the current minimum workload, ensuring local optimization for global balance.</p>
+                    </div>
+                    <div style={{ padding: '1rem', background: '#f8fafc', borderRadius: '8px', borderLeft: '4px solid #10b981' }}>
+                        <h4 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Time Complexity</h4>
+                        <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>Sorting cases by priority takes $O(N \log N)$ time, providing a highly scalable solution for large courts.</p>
+                    </div>
                 </div>
             </div>
         </div>
