@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Briefcase, Users, Activity, Clock } from 'lucide-react';
 
@@ -12,7 +12,7 @@ const Dashboard = () => {
     });
 
     useEffect(() => {
-        axios.get('http://localhost:5000/dashboard-stats')
+        api.get('/dashboard-stats')
             .then(res => setStats(res.data))
             .catch(err => console.error("Error fetching stats:", err));
     }, []);
@@ -42,16 +42,23 @@ const Dashboard = () => {
 
             <div className="card">
                 <h3 className="card-title">Judge Workload Distribution</h3>
-                <div style={{ width: '100%', height: 300 }}>
-                    <ResponsiveContainer>
-                        <BarChart data={stats.workloads}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis allowDecimals={false} />
-                            <Tooltip />
-                            <Bar dataKey="workload" fill="#6366f1" radius={[6, 6, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
+                <div style={{ width: '100%', height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', borderRadius: '8px' }}>
+                    {stats.workloads.every(j => j.workload === 0) ? (
+                        <div style={{ textAlign: 'center', color: '#94a3b8' }}>
+                            <Activity size={40} style={{ marginBottom: '10px', opacity: 0.5 }} />
+                            <p>No active workload data. Run the <strong>Scheduler</strong> to see distribution.</p>
+                        </div>
+                    ) : (
+                        <ResponsiveContainer>
+                            <BarChart data={stats.workloads}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                                <YAxis allowDecimals={false} axisLine={false} tickLine={false} />
+                                <Tooltip cursor={{ fill: '#f1f5f9' }} />
+                                <Bar dataKey="workload" fill="#6366f1" radius={[6, 6, 0, 0]} barSize={40} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    )}
                 </div>
             </div>
 

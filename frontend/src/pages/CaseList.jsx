@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { RefreshCw, Calculator } from 'lucide-react';
+import api from '../api';
+import { RefreshCw, Calculator, Trash2 } from 'lucide-react';
 
 const CaseList = () => {
     const [cases, setCases] = useState([]);
@@ -8,7 +8,7 @@ const CaseList = () => {
 
     const fetchCases = () => {
         setLoading(true);
-        axios.get('http://localhost:5000/cases')
+        api.get('/cases')
             .then(res => setCases(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
@@ -16,8 +16,17 @@ const CaseList = () => {
 
     const processPriorities = () => {
         setLoading(true);
-        axios.post('http://localhost:5000/calculate-priority')
+        api.post('/calculate-priority')
             .then(res => fetchCases())
+            .catch(err => console.error(err))
+            .finally(() => setLoading(false));
+    };
+
+    const deleteCase = (id) => {
+        if (!window.confirm('Are you sure you want to delete this case?')) return;
+        setLoading(true);
+        api.post('/delete-case', { id })
+            .then(() => fetchCases())
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
@@ -37,7 +46,7 @@ const CaseList = () => {
                 <h2 className="card-title" style={{ margin: 0 }}>Case Registry Engine</h2>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <button onClick={fetchCases} className="btn" disabled={loading}>
-                        <RefreshCw size={16} /> Refresh Let
+                        <RefreshCw size={16} /> Refresh List
                     </button>
                     <button onClick={processPriorities} className="btn btn-accent" disabled={loading}>
                         <Calculator size={16} /> Run Priority OS Engine
@@ -57,6 +66,7 @@ const CaseList = () => {
                                 <th>Hearings</th>
                                 <th>Final Priority</th>
                                 <th>Status</th>
+                                <th style={{ textAlign: 'center' }}>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,6 +87,16 @@ const CaseList = () => {
                                             <span style={{ color: 'var(--color-danger)' }}>Pending</span>
                                         )}
                                     </td>
+                                    <td style={{ textAlign: 'center' }}>
+                                        <button 
+                                            onClick={() => deleteCase(c.id)} 
+                                            className="btn btn-danger" 
+                                            style={{ padding: '4px 8px', background: 'var(--color-danger)' }}
+                                            disabled={loading}
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -93,7 +113,7 @@ const CaseList = () => {
                 <h3 className="card-title">Priority Process Starvation Handling</h3>
                 <p>The system actively prevents starvation of low-urgency processes (Cases) through an Aging Mechanism:</p>
                 <div style={{ background: 'var(--color-bg-base)', padding: '15px', borderRadius: '4px', marginTop: '1rem', borderLeft: '4px solid var(--color-gold)' }}>
-                    <strong>Dynamic Priority = </strong> (CaseAgeInDays × 3) + (Urgency × 2) + CriticalPathDuration - HearingsDone
+                    <strong>Dynamic Priority = </strong> (CaseAgeInDays × 3) + (Urgency × 2) - HearingsDone
                 </div>
             </div>
         </div>

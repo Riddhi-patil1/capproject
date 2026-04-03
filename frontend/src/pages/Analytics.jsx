@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { PieChart, Pie, Cell, Tooltip as PieTooltip, ResponsiveContainer, Legend } from 'recharts';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as LineTooltip, Legend as LineLegend } from 'recharts';
 
@@ -7,7 +7,7 @@ const Analytics = () => {
     const [stats, setStats] = useState({ caseTypes: [], workloads: [] });
 
     useEffect(() => {
-        axios.get('http://localhost:5000/dashboard-stats')
+        api.get('/dashboard-stats')
             .then(res => setStats(res.data))
             .catch(err => console.error(err));
     }, []);

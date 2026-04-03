@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Calendar, AlertTriangle, Layers, Maximize } from 'lucide-react';
 
 const Schedule = () => {
@@ -13,7 +13,7 @@ const Schedule = () => {
     const generateSchedule = () => {
         setLoading(true);
         setMessage('Executing Schedule OS Balancer...');
-        axios.post('http://localhost:5000/generate-schedule')
+        api.post('/generate-schedule')
             .then(res => {
                 setSchedule(res.data.schedule);
                 setJudges(res.data.judges);
@@ -29,7 +29,7 @@ const Schedule = () => {
 
     const simulateInterrupt = (judge_id) => {
         setLoading(true);
-        axios.post('http://localhost:5000/simulate-interrupt', { judge_id })
+        api.post('/simulate-interrupt', { judge_id })
             .then(res => {
                 setMessage(res.data.message);
                 // Immediately regenerate the schedule after interrupt to show redistribution

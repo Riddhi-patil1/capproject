@@ -158,6 +158,14 @@ app.post('/generate-schedule', (req, res) => {
     });
 });
 
+app.post('/delete-case', (req, res) => {
+    const { id } = req.body;
+    db.run(`DELETE FROM Cases WHERE id = ?`, [id], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Case deleted successfully" });
+    });
+});
+
 app.post('/simulate-interrupt', (req, res) => {
     const { judge_id } = req.body; // Which judge is absent
     db.run(`DELETE FROM Judges WHERE id = ?`, [judge_id], function (err) {
@@ -187,5 +195,5 @@ app.get('/dashboard-stats', (req, res) => {
     });
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Save, Upload } from 'lucide-react';
 
 const AddCase = () => {
@@ -26,7 +26,7 @@ const AddCase = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/add-case', formData);
+            const res = await api.post('/add-case', formData);
             setMessage(`Case successfully added! Assigned Urgency Base: ${res.data.urgency}`);
             setFormData({
                 case_id: '',

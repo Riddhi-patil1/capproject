@@ -1,0 +1,22 @@
+services:
+  # Backend Service
+  - type: web
+    name: justiceos-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+
+  # Frontend Static Site
+  - type: static
+    name: justiceos-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://your-backend-url.onrender.com

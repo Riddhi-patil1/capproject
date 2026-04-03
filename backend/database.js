@@ -6,7 +6,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database', err);
     } else {
-        console.log('Database connected');
+        console.log('Database connected to SQLite');
         
         db.serialize(() => {
             db.run(`CREATE TABLE IF NOT EXISTS Cases (
@@ -17,15 +17,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 life_risk BOOLEAN,
                 senior_child BOOLEAN,
                 deadline BOOLEAN,
-                hearings_done INTEGER,
-                urgency INTEGER,
+                hearings_done INTEGER DEFAULT 0,
+                urgency INTEGER DEFAULT 0,
                 priority REAL,
                 judge_id INTEGER,
                 slot INTEGER
             )`);
 
             db.run(`CREATE TABLE IF NOT EXISTS Judges (
-                id INTEGER PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT,
                 workload INTEGER DEFAULT 0
             )`, () => {
