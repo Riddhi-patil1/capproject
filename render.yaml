@@ -11,7 +11,7 @@ services:
         value: 5000
 
   # Frontend Static Site
-  - type: static
+  - type: static_site
     name: justiceos-frontend
     runtime: static
     rootDir: frontend
