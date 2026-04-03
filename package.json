@@ -1,10 +1,8 @@
 {
-  "name": "justiceos-project",
+  "name": "justiceos-monorepo",
   "version": "1.0.0",
   "scripts": {
-    "install:all": "cd backend && npm install && cd ../frontend && npm install",
-    "build:frontend": "cd frontend && npm run build",
-    "build": "npm run install:all && npm run build:frontend",
-    "start": "cd backend && npm start"
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm start --prefix backend"
   }
 }
